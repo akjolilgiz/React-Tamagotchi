@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
-const Health = () => {
-  return <button>Cure</button>;
+const Health = props => {
+  return <button onClick={props.onHealth}>Cure</button>;
 };
 
 export default Health;
