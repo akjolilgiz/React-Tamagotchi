@@ -29,6 +29,9 @@ class Tamagotchi extends React.Component {
     this.EnergyTimer = setInterval(() => this.handleEnergyDecrease(), 1000);
     this.HealthTimer = setInterval(() => this.handleHealthDecrease(), 1000);
     this.HungerTimer = setInterval(() => this.handleHungerDecrease(), 1000);
+    this.state.energy = 100;
+    this.state.hunger = 100;
+    this.state.health = 100;
   }
 
   handleHunger() {
@@ -49,7 +52,7 @@ class Tamagotchi extends React.Component {
 
   handleEnergyDecrease() {
     var newEnergy = this.state.energy;
-    newEnergy -= 20;
+    newEnergy -= 3;
     this.setState({ energy: newEnergy });
   }
   handleHealthDecrease() {

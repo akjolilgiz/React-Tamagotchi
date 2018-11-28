@@ -4,7 +4,7 @@ import Tamagotchi from "./Tamagotchi";
 
 function App() {
   var bodyStyle = {
-    backgroundColor: "yellow",
+    backgroundColor: "gray",
     height: "1500"
   };
   return (
