@@ -53,6 +53,15 @@ class Tamagotchi extends React.Component {
       width: 200,
       height: 200
     };
+    let numbere = this.state.energy;
+    let newNumber = numbere.toString();
+    let newBar = {
+      width: newNumber + "%",
+      ariaValuenow: "{this.state.energy}",
+      ariaValuemin: "0",
+      ariaValuemax: "100",
+      height: 20
+    };
     if (this.state.energy >= 100) {
       //   feedButton = "STOOOOOP Sleeping";
       this.state.energy = 100;
@@ -64,7 +73,14 @@ class Tamagotchi extends React.Component {
           src="https://vignette.wikia.nocookie.net/muppet/images/0/08/CookieMonsterWaving.jpg/revision/latest?cb=20120128192952"
         />
         <h1>{this.state.name}</h1>
+
         <h3>Health: {this.state.health}</h3>
+        <div className="progress">
+          <div className="progress-bar" role="progressbar" style={newBar}>
+            {this.state.energy}%
+          </div>
+        </div>
+
         <h3>Hunger: {this.state.hunger}</h3>
         <h3>Energy: {this.state.energy}</h3>
         {/* <h3>time: {this.state.timeCreated.from(new Moment(), true)}</h3> */}
