@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 
 const Health = props => {
-  return <button onClick={props.onHealth}>Cure</button>;
+  return (
+    <button className="btn btn-success" onClick={props.onHealth}>
+      Cure
+    </button>
+  );
 };
 
 export default Health;

@@ -9,7 +9,7 @@ class Tamagotchi extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "Hungry",
+      name: "Godzilla",
       health: 100,
       hunger: 100,
       energy: 100,
@@ -20,14 +20,27 @@ class Tamagotchi extends React.Component {
     this.handleStart = this.handleStart.bind(this);
     this.handleEnergyDecrease = this.handleEnergyDecrease.bind(this);
     this.handleEnergy = this.handleEnergy.bind(this);
+    this.handleHunger = this.handleHunger.bind(this);
+  }
+  handleStart() {
+    var newTimeCreated = this.state.timeCreated;
+    newTimeCreated = new Moment();
+    this.setState({ timeCreated: newTimeCreated });
+    this.EnergyTimer = setInterval(() => this.handleEnergyDecrease(), 1000);
+    this.HealthTimer = setInterval(() => this.handleHealthDecrease(), 1000);
+    this.HungerTimer = setInterval(() => this.handleHungerDecrease(), 1000);
   }
 
+  handleHunger() {
+    var newHunger = this.state.hunger;
+    newHunger += 2;
+    this.setState({ hunger: newHunger });
+  }
   handleEnergy() {
     var newEnergy = this.state.energy;
     newEnergy += 2;
     this.setState({ energy: newEnergy });
   }
-
   handleHealth() {
     var newHealth = this.state.health;
     newHealth++;
@@ -35,103 +48,146 @@ class Tamagotchi extends React.Component {
   }
 
   handleEnergyDecrease() {
-    console.log("asdasdas");
     var newEnergy = this.state.energy;
-    newEnergy -= 3;
+    newEnergy -= 20;
     this.setState({ energy: newEnergy });
-
-    if (this.state.energy === 0) {
-      this.state.energy = 0;
-      return clearInterval(this.timeUpdate);
-    }
-    if (this.state.energy > 100) {
-      console.log("asdasdas((((((");
-
-      this.state.energy = 100;
-    }
   }
   handleHealthDecrease() {
-    console.log("handleHealthDecrease");
     var newHealth = this.state.health;
     newHealth--;
     this.setState({ health: newHealth });
-
-    if (this.state.health === 0) {
-      this.state.health = 0;
-      return clearInterval(this.timeUpdate);
-    }
-    if (this.state.health > 100) {
-      this.state.health = 100;
-    }
   }
-
-  handleStart() {
-    var newTimeCreated = this.state.timeCreated;
-    newTimeCreated = new Moment();
-    this.setState({ timeCreated: newTimeCreated });
-    this.timeUpdate = setInterval(() => this.handleEnergyDecrease(), 1000);
-    this.timeUpdate = setInterval(() => this.handleHealthDecrease(), 1000);
+  handleHungerDecrease() {
+    var newHunger = this.state.hunger;
+    newHunger -= 2;
+    this.setState({ hunger: newHunger });
   }
 
   render() {
-    let feedButton = null;
+    let sleepButton = null;
     let cureButton = null;
-
+    let feedButton = null;
+    let tom = (
+      <div>
+        <h1>Godzilla</h1>
+        <img
+          height="300px"
+          src="https://i.gifer.com/origin/c0/c0f164fe3a50f5349e0897e84aff798b_w200.webp"
+        />
+      </div>
+    );
     var imgStyle = {
       width: 200,
       height: 200
     };
     //let numbere = this.state.energy;
     //let newNumber = numbere.toString();
+    if (
+      this.state.hunger < 0 ||
+      this.state.health < 0 ||
+      this.state.energy < 0
+    ) {
+      tom =
+        <div>
+          <h1>Godzilla is dead</h1>
+          <img
+            height="300px"
+            src="https://media2.giphy.com/media/3o85xr89frMOGSvSTK/giphy.gif?cid=3640f6095bff0d506371546963654d82"
+          />
+        </div>
+      clearInterval(this.EnergyTimer),
+        clearInterval(this.HungerTimer),
+        clearInterval(this.HealthTimer),
+        this.state.hunger = 0,
+        this.state.energy = 0,
+        this.state.health = 0;
+    };
+
+    let nameGif = {
+      textAlign: "center"
+    };
+    let Bars = {
+      marginLeft: "8%",
+      marginRight: "5%",
+      width: "80%"
+    };
+    let barNames = {
+      textAlign: "center"
+    };
     let newEnergyBar = {
-      width: this.state.energy.toString() + "%",
+      width: this.state.health.toString() + "%",
       ariaValuenow: "{this.state.energy}",
       ariaValuemin: "0",
       ariaValuemax: "100",
       height: "20"
     };
-
     let newHealthBar = {
-      width: this.state.health.toString() + "%",
+      width: this.state.energy.toString() + "%",
       ariaValuenow: "{this.state.health}",
+      ariaValuemin: "0",
+      ariaValuemax: "100",
+      height: "20"
+    };
+    let bodyStyle = {
+      backgroundColor: "yellow"
+    };
+
+    let newHungerBar = {
+      width: this.state.hunger.toString() + "%",
+      ariaValuenow: "{this.state.hunger}",
       ariaValuemin: "0",
       ariaValuemax: "100",
       height: "20"
     };
 
     if (this.state.energy >= 100) {
-      //   feedButton = "STOOOOOP Sleeping";
       this.state.energy = 100;
-    } else feedButton = <Energy onEnergy={this.handleEnergy} />;
+    } else if (this.state.energy === 0) {
+      sleepButton = null
+    } else sleepButton = <Energy onEnergy={this.handleEnergy} />;
 
     if (this.state.health >= 100) {
-      //   feedButton = "STOOOOOP Sleeping";
       this.state.health = 100;
-    } else cureButton = <Health onHealth={this.handleHealth} />;
+    } else if (this.state.health === 0) {
+      cureButton = null
+    }
+    else cureButton = <Health onHealth={this.handleHealth} />;
+
+    if (this.state.hunger >= 100) {
+      this.state.hunger = 100;
+    }
+    else if (this.state.hunger === 0) {
+      feedButton = null
+    }
+    else feedButton = <Hunger onHunger={this.handleHunger} />;
 
     return (
       <div>
-        <img
-          style={imgStyle}
-          src="https://vignette.wikia.nocookie.net/muppet/images/0/08/CookieMonsterWaving.jpg/revision/latest?cb=20120128192952"
-        />
-        <h1>{this.state.name}</h1>
-
-        <h3>Health: </h3>
-        {/* {this.state.health} */}
-        <div className="progress">
+        <div style={nameGif}> {tom}</div>
+        <hr />
+        <h3 style={barNames}>Health: </h3>
+        <div className="progress" style={Bars}>
           <div
             className="progress-bar bg-success"
             role="progressbar"
             style={newEnergyBar}
           >
-            Energy: {this.state.health}%
+            Health: {this.state.health}%
           </div>
         </div>
 
-        <h3>Hunger: {this.state.hunger}</h3>
-        <h3>Energy:</h3>
-        <div className="progress">
+        <h3 style={barNames}>Hunger: </h3>
+        <div className="progress" style={Bars}>
+          <div
+            className="progress-bar bg-primary"
+            role="progressbar"
+            style={newHungerBar}
+          >
+            Hunger: {this.state.hunger}%
+          </div>
+        </div>
+        <h3 style={barNames}>Energy:</h3>
+        <div className="progress" style={Bars}>
           <div
             className="progress-bar bg-info"
             role="progressbar"
@@ -140,14 +196,19 @@ class Tamagotchi extends React.Component {
             Energy: {this.state.energy}%
           </div>
         </div>
-        {/* <h3>time: {this.state.timeCreated.from(new Moment(), true)}</h3> */}
-        {/* {<Health />} */}
-        {feedButton}
-        {cureButton}
-
-        {/* <Energy onEnergy={this.handleEnergy} /> */}
-        <Hunger />
-        <Start onStart={this.handleStart} />
+        <br />
+        <div className="row">
+          <div className="col-md-4" />
+          <div className="col-md-1">{sleepButton}</div>
+          <br />
+          <div className="col-md-1">{cureButton}</div>
+          <br />
+          <div className="col-md-1">{feedButton}</div>
+          <br />
+          <div className="col-md-1">
+            <Start onStart={this.handleStart} />
+          </div>
+        </div>
       </div>
     );
   }
