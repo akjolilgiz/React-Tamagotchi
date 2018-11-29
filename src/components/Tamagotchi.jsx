@@ -22,16 +22,27 @@ class Tamagotchi extends React.Component {
     this.handleEnergy = this.handleEnergy.bind(this);
     this.handleHunger = this.handleHunger.bind(this);
   }
+
   handleStart() {
-    var newTimeCreated = this.state.timeCreated;
-    newTimeCreated = new Moment();
-    this.setState({ timeCreated: newTimeCreated });
+   
+
+    clearInterval(this.EnergyTimer);
+    clearInterval(this.HealthTimer);
+    clearInterval(this.HungerTimer);
+
+    let newTimeCreated = new Moment();
+
+    this.setState({
+      health: 100,
+      hunger: 100,
+      energy: 100,
+      timeCreated: newTimeCreated
+    })
+
     this.EnergyTimer = setInterval(() => this.handleEnergyDecrease(), 1000);
     this.HealthTimer = setInterval(() => this.handleHealthDecrease(), 1000);
     this.HungerTimer = setInterval(() => this.handleHungerDecrease(), 1000);
-    this.state.energy = 100;
-    this.state.hunger = 100;
-    this.state.health = 100;
+
   }
 
   handleHunger() {
@@ -121,15 +132,15 @@ class Tamagotchi extends React.Component {
       width: this.state.health.toString() + "%",
       ariaValuenow: "{this.state.energy}",
       ariaValuemin: "0",
-      ariaValuemax: "100",
-      height: "20"
+      ariaValuemax: "100px",
+      height: "20px"
     };
     let newHealthBar = {
       width: this.state.energy.toString() + "%",
       ariaValuenow: "{this.state.health}",
       ariaValuemin: "0",
-      ariaValuemax: "100",
-      height: "20"
+      ariaValuemax: "100px",
+      height: "20px"
     };
     let bodyStyle = {
       backgroundColor: "yellow"
@@ -139,8 +150,8 @@ class Tamagotchi extends React.Component {
       width: this.state.hunger.toString() + "%",
       ariaValuenow: "{this.state.hunger}",
       ariaValuemin: "0",
-      ariaValuemax: "100",
-      height: "20"
+      ariaValuemax: "100px",
+      height: "20px"
     };
 
     if (this.state.energy >= 100) {
