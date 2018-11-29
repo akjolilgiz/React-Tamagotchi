@@ -1,8 +1,7 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
-import Tamagotchi from "./Tamagotchi";
 import PropTypes from "prop-types";
-import Header from "./Header"
+import Navbar from "./Navbar"
 
 function App() {
   var bodyStyle = {
@@ -14,7 +13,7 @@ function App() {
       <style jsx>{`
         font-family: Helvetica;
       `}</style>
-      <Tamagotchi/>
+      <Navbar/>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import Hunger from "./Hunger";
 import Moment from "moment";
 import Start from "./Start";
 import Header from './Header';
-import Navbar from './Navbar';
+import PropTypes from 'prop-types';
 
 class Tamagotchi extends React.Component {
   constructor(props) {
@@ -16,7 +16,6 @@ class Tamagotchi extends React.Component {
       hunger: 100,
       energy: 100,
       timeCreated: 0,
-      
     };
     
     this.handleEnergy = this.handleEnergy.bind(this);
@@ -25,10 +24,6 @@ class Tamagotchi extends React.Component {
     this.handleEnergyDecrease = this.handleEnergyDecrease.bind(this);
     this.handleEnergy = this.handleEnergy.bind(this);
     this.handleHunger = this.handleHunger.bind(this);
-    this.pickedOne=this.pickedOne.bind(this);
-    this.pickedTwo=this.pickedTwo.bind(this);
-    this.pickedThree=this.pickedThree.bind(this);
-    this.pickedTamagotchi = 0;
   }
   
 
@@ -68,7 +63,7 @@ class Tamagotchi extends React.Component {
     var newHealth = this.state.health;
     newHealth++;
     this.setState({ health: newHealth });
-  }
+  }ƒ
   
   handleEnergyDecrease() {
     var newEnergy = this.state.energy;
@@ -86,17 +81,6 @@ class Tamagotchi extends React.Component {
     this.setState({ hunger: newHunger });
   }
 
-  pickedOne() {
-    this.pickedTamagotchi = 1;
-    alert(this.pickedTamagotchi)
- };
-  pickedTwo() {
-    this.pickedTamagotchi = 2; 
- };
-  pickedThree() {
-    this.pickedTamagotchi = 3; 
- };
-
   render() {
   
     let sleepButton = null;
@@ -106,8 +90,7 @@ class Tamagotchi extends React.Component {
 
    
 
-    let tom = <Header pickedTamagotchi = {this.pickedTamagotchi}/>;
-
+    let tom = <Header pickedPokemon = {this.props.pickedPokemon} health = {this.state.health} energy = {this.state.energy} hunger = {this.state.hunger}/>;
     var imgStyle = {
       width: 200,
       height: 200
@@ -121,7 +104,7 @@ class Tamagotchi extends React.Component {
     ) {
       tom =
         <div>
-          <h1>Godzilla is dead</h1>
+          <h1>You killed TOM!!</h1>
           <img
             height="300px"
             src="https://media2.giphy.com/media/3o85xr89frMOGSvSTK/giphy.gif?cid=3640f6095bff0d506371546963654d82"
@@ -171,6 +154,7 @@ class Tamagotchi extends React.Component {
       ariaValuemax: "100px",
       height: "20px"
     };
+    let tamaBars = null; 
 
     if (this.state.energy >= 100) {
       this.state.energy = 100;
@@ -193,60 +177,67 @@ class Tamagotchi extends React.Component {
     }
     else feedButton = <Hunger onHunger={this.handleHunger} />;
 
+ 
+    if (this.props.pickedPokemon !== 0){
+      tamaBars =     <div>
+      <div style={nameGif}> {tom}</div>
+      <hr />
+      <h3 style={barNames}>Health: </h3>
+      <div className="progress" style={Bars}>
+        <div
+          className="progress-bar bg-success"
+          role="progressbar"
+          style={newEnergyBar}
+        >
+          Health: {this.state.health}%
+        </div>
+      </div>
+
+      <h3 style={barNames}>Hunger: </h3>
+      <div className="progress" style={Bars}>
+        <div
+          className="progress-bar bg-primary"
+          role="progressbar"
+          style={newHungerBar}
+        >
+          Hunger: {this.state.hunger}%
+        </div>
+      </div>
+      <h3 style={barNames}>Energy:</h3>
+      <div className="progress" style={Bars}>
+        <div
+          className="progress-bar bg-info"
+          role="progressbar"
+          style={newHealthBar}
+        >
+          Energy: {this.state.energy}%
+        </div>
+      </div>
+      <br />
+      <div className="row">
+        <div className="col-md-4" />
+        <div className="col-md-1">{sleepButton}</div>
+        <br />
+        <div className="col-md-1">{cureButton}</div>
+        <br />
+        <div className="col-md-1">{feedButton}</div>
+        <br />
+        <div className="col-md-1">
+          <Start onStart={this.handleStart} />
+        </div>
+      </div>
+    </div>
+    } else {tamaBars = null}
     return (
       <div>
-         <h1>{this.pickedTamagotchi}</h1>
-        <Navbar pickedOne = {this.pickedOne} pickedTwo = {this.pickedTwo} pickedThree = {this.pickedThree}/>
-       
-        <div style={nameGif}> {tom}</div>
-        <hr />
-        <h3 style={barNames}>Health: </h3>
-        <div className="progress" style={Bars}>
-          <div
-            className="progress-bar bg-success"
-            role="progressbar"
-            style={newEnergyBar}
-          >
-            Health: {this.state.health}%
-          </div>
-        </div>
-
-        <h3 style={barNames}>Hunger: </h3>
-        <div className="progress" style={Bars}>
-          <div
-            className="progress-bar bg-primary"
-            role="progressbar"
-            style={newHungerBar}
-          >
-            Hunger: {this.state.hunger}%
-          </div>
-        </div>
-        <h3 style={barNames}>Energy:</h3>
-        <div className="progress" style={Bars}>
-          <div
-            className="progress-bar bg-info"
-            role="progressbar"
-            style={newHealthBar}
-          >
-            Energy: {this.state.energy}%
-          </div>
-        </div>
-        <br />
-        <div className="row">
-          <div className="col-md-4" />
-          <div className="col-md-1">{sleepButton}</div>
-          <br />
-          <div className="col-md-1">{cureButton}</div>
-          <br />
-          <div className="col-md-1">{feedButton}</div>
-          <br />
-          <div className="col-md-1">
-            <Start onStart={this.handleStart} />
-          </div>
-        </div>
+        {tamaBars}
       </div>
     );
   }
+}
+
+Tamagotchi.propTypes = {
+  pickedTamagotchi: PropTypes.func
 }
 
 export default Tamagotchi;
