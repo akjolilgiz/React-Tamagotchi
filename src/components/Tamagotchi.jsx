@@ -11,15 +11,14 @@ class Tamagotchi extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "Godzilla",
+      name: "Tom",
       health: 100,
       hunger: 100,
       energy: 100,
       timeCreated: 0,
-      pickedTamagotchi:0
       
     };
-
+    
     this.handleEnergy = this.handleEnergy.bind(this);
     this.handleHealth = this.handleHealth.bind(this);
     this.handleStart = this.handleStart.bind(this);
@@ -29,8 +28,10 @@ class Tamagotchi extends React.Component {
     this.pickedOne=this.pickedOne.bind(this);
     this.pickedTwo=this.pickedTwo.bind(this);
     this.pickedThree=this.pickedThree.bind(this);
+    this.pickedTamagotchi = 0;
   }
   
+
   handleStart() {
     
     
@@ -85,8 +86,9 @@ class Tamagotchi extends React.Component {
     this.setState({ hunger: newHunger });
   }
 
-   pickedOne() {
-    this.pickedTamagotchi = 1; 
+  pickedOne() {
+    this.pickedTamagotchi = 1;
+    alert(this.pickedTamagotchi)
  };
   pickedTwo() {
     this.pickedTamagotchi = 2; 
@@ -193,8 +195,9 @@ class Tamagotchi extends React.Component {
 
     return (
       <div>
+         <h1>{this.pickedTamagotchi}</h1>
         <Navbar pickedOne = {this.pickedOne} pickedTwo = {this.pickedTwo} pickedThree = {this.pickedThree}/>
-        <h1>{this.pickedTamagotchi}</h1>
+       
         <div style={nameGif}> {tom}</div>
         <hr />
         <h3 style={barNames}>Health: </h3>
