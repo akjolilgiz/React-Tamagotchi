@@ -4,6 +4,8 @@ import Health from "./Health";
 import Hunger from "./Hunger";
 import Moment from "moment";
 import Start from "./Start";
+import Header from './Header';
+import Navbar from './Navbar';
 
 class Tamagotchi extends React.Component {
   constructor(props) {
@@ -13,38 +15,44 @@ class Tamagotchi extends React.Component {
       health: 100,
       hunger: 100,
       energy: 100,
-      timeCreated: 0
+      timeCreated: 0,
+      pickedTamagotchi:0
+      
     };
+
     this.handleEnergy = this.handleEnergy.bind(this);
     this.handleHealth = this.handleHealth.bind(this);
     this.handleStart = this.handleStart.bind(this);
     this.handleEnergyDecrease = this.handleEnergyDecrease.bind(this);
     this.handleEnergy = this.handleEnergy.bind(this);
     this.handleHunger = this.handleHunger.bind(this);
+    this.pickedOne=this.pickedOne.bind(this);
+    this.pickedTwo=this.pickedTwo.bind(this);
+    this.pickedThree=this.pickedThree.bind(this);
   }
-
+  
   handleStart() {
-   
-
+    
+    
     clearInterval(this.EnergyTimer);
     clearInterval(this.HealthTimer);
     clearInterval(this.HungerTimer);
-
+    
     let newTimeCreated = new Moment();
-
+    
     this.setState({
       health: 100,
       hunger: 100,
       energy: 100,
       timeCreated: newTimeCreated
     })
-
+    
     this.EnergyTimer = setInterval(() => this.handleEnergyDecrease(), 1000);
     this.HealthTimer = setInterval(() => this.handleHealthDecrease(), 1000);
     this.HungerTimer = setInterval(() => this.handleHungerDecrease(), 1000);
-
+    
   }
-
+  
   handleHunger() {
     var newHunger = this.state.hunger;
     newHunger += 2;
@@ -60,7 +68,7 @@ class Tamagotchi extends React.Component {
     newHealth++;
     this.setState({ health: newHealth });
   }
-
+  
   handleEnergyDecrease() {
     var newEnergy = this.state.energy;
     newEnergy -= 3;
@@ -77,19 +85,27 @@ class Tamagotchi extends React.Component {
     this.setState({ hunger: newHunger });
   }
 
+   pickedOne() {
+    this.pickedTamagotchi = 1; 
+ };
+  pickedTwo() {
+    this.pickedTamagotchi = 2; 
+ };
+  pickedThree() {
+    this.pickedTamagotchi = 3; 
+ };
+
   render() {
+  
     let sleepButton = null;
     let cureButton = null;
     let feedButton = null;
-    let tom = (
-      <div>
-        <h1>Godzilla</h1>
-        <img
-          height="300px"
-          src="https://i.gifer.com/origin/c0/c0f164fe3a50f5349e0897e84aff798b_w200.webp"
-        />
-      </div>
-    );
+    // let tom = null;
+
+   
+
+    let tom = <Header pickedTamagotchi = {this.pickedTamagotchi}/>;
+
     var imgStyle = {
       width: 200,
       height: 200
@@ -177,6 +193,8 @@ class Tamagotchi extends React.Component {
 
     return (
       <div>
+        <Navbar pickedOne = {this.pickedOne} pickedTwo = {this.pickedTwo} pickedThree = {this.pickedThree}/>
+        <h1>{this.pickedTamagotchi}</h1>
         <div style={nameGif}> {tom}</div>
         <hr />
         <h3 style={barNames}>Health: </h3>
